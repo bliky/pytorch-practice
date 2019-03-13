@@ -1,0 +1,20 @@
+{
+  "title": "pytorch-practice",
+  "description": "pytorch practice",
+  "author": "kenblikylee",
+  "isbn": "",
+  "language": "zh-hans",
+  "gitbook": "3.2.3",
+  "plugins": ["prism", "-highlight", "chapter-fold"],
+  "pluginsConfig": {
+    "prism": {
+      "lang": {
+        "flow": "typescript"
+      },
+      "css": [
+        "prismjs/themes/prism-okaidia.css"
+      ]
+    },
+    "chapter-fold":{}
+  }
+}
