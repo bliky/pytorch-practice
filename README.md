@@ -9,10 +9,30 @@
 # %config InlineBackend.figure_format = 'retina'
 
 # 导入库
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sb
+
 import torch
 from torch import nn
 from torch import optim
 from torch.nn import functional as F
-from torchvision import datasets, transforms
-from matplotlib import pyplot as plt
+from torch.autograd import Variable
+from torchvision import datasets, transforms, models
+
+from collections import OrderedDict
+from PIL import Image
+import time
+import json
+import argparse
+import ast
+from os import listdir
+
+# 爬虫
+import requests
+from bs4 import BeautifulSoup
+import re
+import MySQLdb
+from pymongo import MongoClient
 ```
