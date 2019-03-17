@@ -1,0 +1,415 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>训练模型 · pytorch-practice</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="kenblikylee">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-okaidia.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../Validation/" />
+    
+    
+    <link rel="prev" href="../Build/classifier.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../Numpy/">
+            
+                <a href="../Numpy/">
+            
+                    
+                    Numpy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../Pandas/">
+            
+                <a href="../Pandas/">
+            
+                    
+                    Pandas
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../Plot/">
+            
+                <a href="../Plot/">
+            
+                    
+                    可视化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../Data/">
+            
+                <a href="../Data/">
+            
+                    
+                    获取数据
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../Build/">
+            
+                <a href="../Build/">
+            
+                    
+                    构建模型
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../Build/classifier.html">
+            
+                <a href="../Build/classifier.html">
+            
+                    
+                    分类器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    训练模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../Validation/">
+            
+                <a href="../Validation/">
+            
+                    
+                    验证模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../Helper/">
+            
+                <a href="../Helper/">
+            
+                    
+                    助手函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >训练模型</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x8BAD;&#x7EC3;&#x6A21;&#x578B;">&#x8BAD;&#x7EC3;&#x6A21;&#x578B;</h1>
+<pre class="language-"><code class="lang-python">images<span class="token punctuation">,</span> labels <span class="token operator">=</span> <span class="token builtin">next</span><span class="token punctuation">(</span><span class="token builtin">iter</span><span class="token punctuation">(</span>trainloader<span class="token punctuation">)</span><span class="token punctuation">)</span>
+images<span class="token punctuation">.</span>resize_<span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">784</span><span class="token punctuation">)</span>
+
+<span class="token builtin">input</span>  <span class="token operator">=</span> images<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span>
+output <span class="token operator">=</span> model<span class="token punctuation">.</span>forward<span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">)</span>
+
+view_classify<span class="token punctuation">(</span>images<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">)</span><span class="token punctuation">,</span> output<span class="token punctuation">)</span>
+</code></pre>
+<pre class="language-"><code class="lang-python"><span class="token comment"># criterion = nn.CrossEntropyLoss()</span>
+<span class="token comment"># optimizer = optim.SGD(model.parameters(), lr=0.01)</span>
+
+criterion <span class="token operator">=</span> nn<span class="token punctuation">.</span>NLLLoss<span class="token punctuation">(</span><span class="token punctuation">)</span>
+optimizer <span class="token operator">=</span> optim<span class="token punctuation">.</span>Adam<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span><span class="token number">0.001</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">train</span><span class="token punctuation">(</span>model<span class="token punctuation">,</span> trainloader<span class="token punctuation">,</span> testloader<span class="token punctuation">,</span> criterion<span class="token punctuation">,</span> optimizer<span class="token punctuation">,</span> epochs<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> print_every<span class="token operator">=</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+    steps <span class="token operator">=</span> <span class="token number">0</span>
+    running_loss <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> e <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>epochs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># Model in training mode, dropout is on</span>
+        model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> images<span class="token punctuation">,</span> labels <span class="token keyword">in</span> trainloader<span class="token punctuation">:</span>
+            steps <span class="token operator">+=</span> <span class="token number">1</span>
+
+            <span class="token comment"># Flatten images into a 784 long vector</span>
+            images<span class="token punctuation">.</span>resize_<span class="token punctuation">(</span>images<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">784</span><span class="token punctuation">)</span>
+
+            optimizer<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+            output <span class="token operator">=</span> model<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>images<span class="token punctuation">)</span>
+            loss <span class="token operator">=</span> criterion<span class="token punctuation">(</span>output<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
+            loss<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            optimizer<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+            running_loss <span class="token operator">+=</span> loss<span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+            <span class="token keyword">if</span> steps <span class="token operator">%</span> print_every <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token comment"># Model in inference mode, dropout is off</span>
+                model<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+                <span class="token comment"># Turn off gradients for validation, will speed up inference</span>
+                <span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    test_loss<span class="token punctuation">,</span> accuracy <span class="token operator">=</span> validation<span class="token punctuation">(</span>model<span class="token punctuation">,</span> testloader<span class="token punctuation">,</span> criterion<span class="token punctuation">)</span>
+
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;Epoch: {}/{}.. &quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>e<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> epochs<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                      <span class="token string">&quot;Training Loss: {:.3f}.. &quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>running_loss<span class="token operator">/</span>print_every<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                      <span class="token string">&quot;Test Loss: {:.3f}.. &quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>test_loss<span class="token operator">/</span><span class="token builtin">len</span><span class="token punctuation">(</span>testloader<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                      <span class="token string">&quot;Test Accuracy: {:.3f}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>accuracy<span class="token operator">/</span><span class="token builtin">len</span><span class="token punctuation">(</span>testloader<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+                running_loss <span class="token operator">=</span> <span class="token number">0</span>
+
+                <span class="token comment"># Make sure dropout and grads are on for training</span>
+                model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../Build/classifier.html" class="navigation navigation-prev " aria-label="Previous page: 分类器">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../Validation/" class="navigation navigation-next " aria-label="Next page: 验证模型">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"训练模型","level":"1.7","depth":1,"next":{"title":"验证模型","level":"1.8","depth":1,"path":"Validation/README.md","ref":"Validation/README.md","articles":[]},"previous":{"title":"分类器","level":"1.6.1","depth":2,"path":"Build/classifier.md","ref":"Build/classifier.md","articles":[]},"dir":"ltr"},"config":{"plugins":["prism","-highlight","chapter-fold"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"lang":{"flow":"typescript"},"css":["prismjs/themes/prism-okaidia.css"]},"chapter-fold":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"kenblikylee","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"isbn":"","variables":{},"title":"pytorch-practice","language":"zh-hans","gitbook":"3.2.3","description":"pytorch practice"},"file":{"path":"Train/README.md","mtime":"2019-03-17T05:27:13.514Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-17T15:28:25.619Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
